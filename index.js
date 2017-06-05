@@ -121,9 +121,9 @@ let generators = {
   array: n => ['[', inject(n.items.map(piff), ','), ']'],
   entry: n => {
     if (n.key) {
-      let keyVal = piff(n.key).join('')
-      if (/^['"'][A-Za-z_]+['"]$/.test(keyVal)) {
-        return [keyVal.substr(1, keyVal.length - 2), ':', piff(n.value)]
+      let keyVal = flatten([piff(n.key)])
+      if (/^['"'][A-Za-z_]+['"]$/.test(keyVal[0])) {
+        return [keyVal[0].substr(1, keyVal[0].length - 2), ':', piff(n.value)]
       } else {
         return [keyVal, ':', piff(n.value)]
       }

@@ -288,3 +288,8 @@ test('include statement', t => {
   t.equal(c('require_once("a.php");'), 'require_once("a.php")', 'require_once with parens')
   t.end()
 });
+
+test('array key expressions work', t => {
+  t.equal(c('$a = [1 * 1 * 1 => 2]'), 'a = [1 * 1 * 1: 2]')
+  t.end()
+})
