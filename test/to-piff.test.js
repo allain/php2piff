@@ -266,3 +266,8 @@ test('.= gets converted to full form', t => {
   t.equal(c('$a .= "hello"'), 'a = "" + a + "hello"')
   t.end()
 })
+
+test('use statement supported', t => {
+  t.equal(c('use a\\B;'), 'use a\\B')
+  t.end()
+});

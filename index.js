@@ -279,6 +279,12 @@ let generators = {
   doc: n => {
     let lines = flatten(n.lines.map(n => n.split('\n')))
     return ['//', inject(lines, ['\n', '//']), '\n']
+  },
+  usegroup: n => {
+    return inject(n.items.map(piff), '\n')
+  },
+  useitem: n => {
+    return ['use', ' ', n.name]
   }
 }
 
