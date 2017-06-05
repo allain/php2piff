@@ -257,6 +257,11 @@ test('string with single quotes escaped work', t => {
   t.end()
 })
 
+test('or keyword gets replaced with ||', t => {
+  t.equal(c('p($a OR $b);'), 'p(a || b)')
+  t.end()
+})
+
 test('.= gets converted to full form', t => {
   t.equal(c('$a .= "hello"'), 'a = "" + a + "hello"')
   t.end()

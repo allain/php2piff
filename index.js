@@ -110,6 +110,8 @@ let generators = {
       } else {
         return ['""', '+', left, '+', right]
       }
+    } else if (n.type === 'or') {
+      return [left, ' ', '||', ' ', right]
     } else {
       return [left, ' ', n.type, ' ', right]
     }
@@ -285,6 +287,7 @@ const piff = ast => {
 
   let generator = generators[ast.kind]
   if (generator) {
+    console.log(ast.kind)
     // console.log(ast)
   } else {
     throw new Error('kind not recognized' + JSON.stringify(ast))
