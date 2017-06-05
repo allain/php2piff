@@ -13,8 +13,6 @@ test('empty file works', t => {
 
 test('HTML works', t => {
   t.equal(toPiff('<b>Testing</b>'), 'print("<b>Testing</b>")')
-  t.equal(toPiff('<b>\\\\"\\\'\\\\</b>'), 'print("<b>\\\\"\\\'\\\\</b>")')
-  t.equal(toPiff('<b>\n</b>'), 'print("<b>\n</b>")')
   t.end()
 })
 
@@ -233,7 +231,7 @@ test('// single line comments', t => {
 })
 
 test('// single line comments indent', t => {
-  t.equal(cRaw('function t() {\n//testing\n}'), 'fn t() {\n  //testing\n  \n}')
+  t.equal(cRaw('function t() {\n//testing\n}'), 'fn t() {\n  //testing\n\n}')
   t.end()
 })
 
@@ -241,10 +239,16 @@ test('multi line comments get turned into', t => {
   t.equal(c('/** multi\n * multi\n * multi*/'), '//multi\n//multi\n//multi')
   t.end()
 })
-test.only('<?php stuff escapes special characters', t => {
+
+test('<?php stuff escapes special characters', t => {
   t.equal(
-    toPiff('<?php ?>\n<p>\n<a href="<?=$attachment->url;?>" target="_blank">'),
+    toPiff('<p>\n<a href="<?=$attachment->url;?>" target="_blank">'),
     'print("<p>\\n<a href=\\"")\n\necho(attachment.url)\n\nprint("\\" target=\\"_blank\\">")'
   )
+  t.end()
+})
+
+test('.= gets converted to full form', t => {
+  t.equal(c('$a .= "hello"'), 'a = a + "hello"')
   t.end()
 })

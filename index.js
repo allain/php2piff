@@ -86,6 +86,9 @@ let generators = {
   function: n => ['fn', ' ', n.name, args(n.arguments), piff(n.body)],
   assign: n => {
     let operator = typeof n.operator === 'string' ? n.operator : '='
+    if (operator === '.=') {
+      return [piff(n.left), '=', piff(n.left), '+', piff(n.right)]
+    }
     return [piff(n.left), ' ', operator, ' ', piff(n.right)]
   },
   closure: n => ['fn', ' ', args(n.arguments), piff(n.body)],
