@@ -249,6 +249,6 @@ test('<?php stuff escapes special characters', t => {
 })
 
 test('.= gets converted to full form', t => {
-  t.equal(c('$a .= "hello"'), 'a = a + "hello"')
+  t.equal(c('$a .= "hello"'), 'a = "" + a + "hello"')
   t.end()
 })

@@ -87,7 +87,16 @@ let generators = {
   assign: n => {
     let operator = typeof n.operator === 'string' ? n.operator : '='
     if (operator === '.=') {
-      return [piff(n.left), '=', piff(n.left), '+', piff(n.right)]
+      return [
+        piff(n.left),
+        '=',
+        '"',
+        '"',
+        '+',
+        piff(n.left),
+        '+',
+        piff(n.right)
+      ]
     }
     return [piff(n.left), ' ', operator, ' ', piff(n.right)]
   },
@@ -275,7 +284,7 @@ const piff = ast => {
 
   let generator = generators[ast.kind]
   if (generator) {
-    //console.log(ast)
+    // console.log(ast)
   } else {
     throw new Error('kind not recognized' + JSON.stringify(ast))
   }
