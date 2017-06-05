@@ -121,7 +121,6 @@ let generators = {
   array: n => ['[', inject(n.items.map(piff), ','), ']'],
   entry: n => {
     if (n.key) {
-      console.log(n.key)
       let keyVal = piff(n.key).join('')
       if (/^['"'][A-Za-z_]+['"]$/.test(keyVal)) {
         return [keyVal.substr(1, keyVal.length - 2), ':', piff(n.value)]
@@ -289,6 +288,9 @@ let generators = {
   },
   clone: n => {
     return ['clone', '(', piff(n.what), ')']
+  },
+  silent: n => {
+    return ['MUTE', '(', piff(n.expr), ')'] 
   },
   include: n => {
     let approach = (n.require ? 'require' : 'include') + (n.once ? '_once' : '')
