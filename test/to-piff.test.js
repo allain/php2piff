@@ -244,13 +244,16 @@ test('multi line comments get turned into', t => {
   t.end()
 })
 
-test
-
 test('<?php stuff escapes special characters', t => {
   t.equal(
     toPiff('<p>\n<a href="<?=$attachment->url;?>" target="_blank">'),
     'print("<p>\\n<a href=\\"")\n\necho(attachment.url)\n\nprint("\\" target=\\"_blank\\">")'
   )
+  t.end()
+})
+
+test('string with single quotes escaped work', t => {
+  t.equal(c("p('allain\\'s test');"), "p('allain\\'s test')")
   t.end()
 })
 

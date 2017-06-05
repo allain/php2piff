@@ -81,7 +81,7 @@ let generators = {
   string: n => [
     n.isDoubleQuote
       ? JSON.stringify(n.value)
-      : "'" + addSlashes(n.value).replace("'", "'") + "'"
+      : "'" + addSlashes(n.value).replace("'", "\\'") + "'"
   ],
   function: n => ['fn', ' ', n.name, args(n.arguments), piff(n.body)],
   assign: n => {
