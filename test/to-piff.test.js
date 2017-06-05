@@ -18,6 +18,14 @@ test('HTML works', t => {
   t.end()
 })
 
+test.only('formatting is sane', t => {
+  t.equal(
+    cRaw('class A { function t() { a(); b(); } function r() {}}'),
+    'class A {\n\n  t() {\n    a()\n    b()\n  }\n\n  r() {}\n}'
+  )
+  t.end()
+})
+
 test('classes', t => {
   t.equal(c('class A {}'), 'class A {\n}', 'empty class works')
   t.equal(
@@ -216,5 +224,20 @@ test('assignment expression with *= is supported', t => {
 
 test('casting works', t => {
   t.equal(c('(bool)1'), '!!1')
+  t.end()
+})
+
+test('// single line comments', t => {
+  t.equal(c('//testing'), '//testing')
+  t.end()
+})
+
+test('// single line comments indent', t => {
+  t.equal(cRaw('function t() {\n//testing\n}'), 'fn t() {\n  //testing\n  \n}')
+  t.end()
+})
+
+test('multi line comments get turned into', t => {
+  t.equal(c('/** multi\n * multi\n * multi*/'), '//multi\n//multi\n//multi')
   t.end()
 })

@@ -54,8 +54,7 @@ let generators = {
     n.isStatic ? ['static', ' '] : null,
     n.name,
     args(n.arguments),
-    piff(n.body),
-    '\n'
+    piff(n.body)
   ],
   classconstant: n => [n.name, '=', piff(n.value)],
   property: n => [
@@ -74,7 +73,7 @@ let generators = {
       n.value ? ['=', piff(n.value)] : null
     ]
   },
-  block: n => ['{', inject(n.children.map(piff), '\n'), '\n', '}'],
+  block: n => ['{', inject(n.children.map(piff), '\n'), '}'],
   constref: n => [typeof n.name === 'string' ? n.name : piff(n.name)],
   return: n => ['return', n.expr ? [' ', piff(n.expr)] : null],
   variable: n => n.name,
@@ -261,7 +260,10 @@ let generators = {
     n.body ? inject(n.body.map(piff), '\n') : null,
     '}'
   ],
-  static: n => ['static', ' ', inject(n.items.map(piff), ',')]
+  static: n => ['static', ' ', inject(n.items.map(piff), ',')],
+  doc: n => {
+    return ['//', inject(n.lines, ['\n', '//']), '\n']
+  }
 }
 
 const piff = ast => {
@@ -279,7 +281,6 @@ const piff = ast => {
 
 module.exports = function (php, filepath) {
   const ast = parser.parseCode(php, filepath)
-
   const piffTokens = Lazy(piff(ast)).flatten().compact().toArray()
   return format(piffTokens)
 }
