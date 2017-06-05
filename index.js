@@ -275,7 +275,8 @@ let generators = {
   ],
   static: n => ['static', ' ', inject(n.items.map(piff), ',')],
   doc: n => {
-    return ['//', inject(n.lines, ['\n', '//']), '\n']
+    let lines = flatten(n.lines.map(n => n.split('\n')))
+    return ['//', inject(lines, ['\n', '//']), '\n']
   }
 }
 

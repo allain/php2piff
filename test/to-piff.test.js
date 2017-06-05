@@ -237,8 +237,14 @@ test('// single line comments indent', t => {
 
 test('multi line comments get turned into', t => {
   t.equal(c('/** multi\n * multi\n * multi*/'), '//multi\n//multi\n//multi')
+  t.equal(
+    c('function t() {\n/*$ru;\n if ($runningInstanceCount > 1) {\na*/}'),
+    'fn t() {\n//$ru;\n// if ($runningInstanceCount > 1) {\n//a\n}'
+  )
   t.end()
 })
+
+test
 
 test('<?php stuff escapes special characters', t => {
   t.equal(
