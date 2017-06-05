@@ -1,6 +1,6 @@
 {
   "name": "php2piff",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "tool for converting php2piff",
   "main": "index.js",
   "author": "Allain Lalonde <allain.lalonde@gmail.com>",
