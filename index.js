@@ -33,7 +33,7 @@ const inject = (arr, delim) => {
 
 let generators = {
   program: n => inject(n.children.map(piff), ['\n', '\n']),
-  inline: n => ['print', '(', '"' + n.value + '"', ')'],
+  inline: n => ['print', '(', '"' + addSlashes(n.value) + '"', ')'],
   class: n => [
     'class',
     ' ',
@@ -169,14 +169,15 @@ let generators = {
 
     return [piff(n.what), post]
   },
-  encapsed: n =>
-    flatten([
+  encapsed: n => {
+    return flatten([
       '"',
       n.value.map(
         v => (v.kind === 'string' ? addSlashes(v.value) : ['{', piff(v), '}'])
       ),
       '"'
-    ]).join(''),
+    ]).join('')
+  },
   continue: n => 'continue',
   try: n => ['try', ' ', piff(n.body), n.catches.map(piff)],
   catch: n => [
@@ -271,7 +272,7 @@ const piff = ast => {
 
   let generator = generators[ast.kind]
   if (generator) {
-    // console.log(ast)
+    //console.log(ast)
   } else {
     throw new Error('kind not recognized' + JSON.stringify(ast))
   }

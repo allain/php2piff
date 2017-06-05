@@ -18,7 +18,7 @@ test('HTML works', t => {
   t.end()
 })
 
-test.only('formatting is sane', t => {
+test.skip('formatting is sane', t => {
   t.equal(
     cRaw('class A { function t() { a(); b(); } function r() {}}'),
     'class A {\n\n  t() {\n    a()\n    b()\n  }\n\n  r() {}\n}'
@@ -239,5 +239,12 @@ test('// single line comments indent', t => {
 
 test('multi line comments get turned into', t => {
   t.equal(c('/** multi\n * multi\n * multi*/'), '//multi\n//multi\n//multi')
+  t.end()
+})
+test.only('<?php stuff escapes special characters', t => {
+  t.equal(
+    toPiff('<?php ?>\n<p>\n<a href="<?=$attachment->url;?>" target="_blank">'),
+    'print("<p>\\n<a href=\\"")\n\necho(attachment.url)\n\nprint("\\" target=\\"_blank\\">")'
+  )
   t.end()
 })
