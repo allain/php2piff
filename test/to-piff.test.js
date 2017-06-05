@@ -276,3 +276,15 @@ test('use statements formatted properly', t => {
   t.equal(cRaw('use a\\B;use b\\C;'), 'use a\\B\n\nuse b\\C')
   t.end()
 });
+
+test('include statement', t => {
+  t.equal(c('include "a.php";'), 'include("a.php")', 'include without parens')
+  t.equal(c('include("a.php");'), 'include("a.php")', 'include with parens')
+  t.equal(c('include_once "a.php";'), 'include_once("a.php")', 'include_once without parens')
+  t.equal(c('include_once("a.php");'), 'include_once("a.php")', 'include_once with parens')
+  t.equal(c('require "a.php";'), 'require("a.php")', 'require without parens')
+  t.equal(c('require("a.php");'), 'require("a.php")', 'require with parens')
+  t.equal(c('require_once "a.php";'), 'require_once("a.php")', 'require_once without parens')
+  t.equal(c('require_once("a.php");'), 'require_once("a.php")', 'require_once with parens')
+  t.end()
+});

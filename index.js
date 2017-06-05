@@ -76,8 +76,8 @@ let generators = {
   block: n => ['{', inject(n.children.map(piff), '\n'), '}'],
   constref: n => [typeof n.name === 'string' ? n.name : piff(n.name)],
   return: n => ['return', n.expr ? [' ', piff(n.expr)] : null],
-  variable: n => n.name,
-  number: n => n.value,
+  variable: n => [n.name],
+  number: n => [n.value],
   string: n => [
     n.isDoubleQuote
       ? JSON.stringify(n.value)
@@ -121,6 +121,7 @@ let generators = {
   array: n => ['[', inject(n.items.map(piff), ','), ']'],
   entry: n => {
     if (n.key) {
+      console.log(n.key)
       let keyVal = piff(n.key).join('')
       if (/^['"'][A-Za-z_]+['"]$/.test(keyVal)) {
         return [keyVal.substr(1, keyVal.length - 2), ':', piff(n.value)]
@@ -285,6 +286,14 @@ let generators = {
   },
   useitem: n => {
     return ['use', ' ', n.name]
+  },
+  clone: n => {
+    return ['clone', '(', piff(n.what), ')']
+  },
+  include: n => {
+    let approach = (n.require ? 'require' : 'include') + (n.once ? '_once' : '')
+    let target = piff(n.target)
+    return [approach, target[0] === '(' ? target : ['(', target, ')'] ]
   }
 }
 
