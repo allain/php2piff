@@ -271,3 +271,8 @@ test('use statement supported', t => {
   t.equal(c('use a\\B;'), 'use a\\B')
   t.end()
 });
+
+test('use statements formatted properly', t => {
+  t.equal(cRaw('use a\\B;use b\\C;'), 'use a\\B\n\nuse b\\C')
+  t.end()
+});
