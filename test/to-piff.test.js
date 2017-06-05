@@ -201,6 +201,19 @@ test('Class formal param treatment', t => {
   t.end()
 })
 
+test('static local variables supported', t => {
+  t.equal(
+    c('function t() { static $a = null; }'),
+    'fn t() {\nstatic a = null\n}'
+  )
+  t.end()
+})
+
+test('assignment expression with *= is supported', t => {
+  t.equal(c('$a *= 3'), 'a *= 3')
+  t.end()
+})
+
 test('casting works', t => {
   t.equal(c('(bool)1'), '!!1')
   t.end()

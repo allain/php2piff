@@ -5,7 +5,7 @@ const flatten = require('flatten')
 
 const parser = new Engine({
   parser: {
-    // extractDoc: true
+    extractDoc: true
   },
   ast: {
     withPositions: true
@@ -65,7 +65,9 @@ let generators = {
     n.value ? ['=', piff(n.value)] : null
   ],
   parameter: n => {
-    let type = n.type ? flatten([piff(n.type)]).join('').replace(/^\\([a-z])/, '$1') : null
+    let type = n.type
+      ? flatten([piff(n.type)]).join('').replace(/^\\([a-z])/, '$1')
+      : null
     return [
       n.type ? [type, ' '] : null,
       n.name,
@@ -83,7 +85,10 @@ let generators = {
       : "'" + addSlashes(n.value).replace("'", "'") + "'"
   ],
   function: n => ['fn', ' ', n.name, args(n.arguments), piff(n.body)],
-  assign: n => [piff(n.left), ' ', n.operator, ' ', piff(n.right)],
+  assign: n => {
+    let operator = typeof n.operator === 'string' ? n.operator : '='
+    return [piff(n.left), ' ', operator, ' ', piff(n.right)]
+  },
   closure: n => ['fn', ' ', args(n.arguments), piff(n.body)],
   bin: n => {
     let left = flatten([piff(n.left)])
@@ -109,7 +114,6 @@ let generators = {
       } else {
         return [keyVal, ':', piff(n.value)]
       }
-      return n.key ? [piff(n.key), ':', ' ', piff(n.value)] : piff(n.value)
     }
     return piff(n.value)
   },
@@ -226,7 +230,6 @@ let generators = {
     ' ',
     piff(n.body)
   ],
-  assign: n => [piff(n.left), ' ', n.operator, ' ', piff(n.right)],
   magic: n => n.value,
   switch: n => ['switch', ' ', '(', piff(n.test), ')', piff(n.body)],
   case: n => [
@@ -265,7 +268,11 @@ const piff = ast => {
   if (ast === null) return null
 
   let generator = generators[ast.kind]
-  if (!generator) throw new Error('kind not recognized' + JSON.stringify(ast))
+  if (generator) {
+    // console.log(ast)
+  } else {
+    throw new Error('kind not recognized' + JSON.stringify(ast))
+  }
 
   return generator(ast)
 }
