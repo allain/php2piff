@@ -191,6 +191,16 @@ test('classes', t => {
   t.end()
 })
 
+test('array formal param treatment', t => {
+  t.equal(c('function t(array $arr) {}'), 'fn t(array arr) {\n}')
+  t.end()
+})
+
+test('Class formal param treatment', t => {
+  t.equal(c('function t(E $e) {}'), 'fn t(E e) {\n}')
+  t.end()
+})
+
 test('casting works', t => {
   t.equal(c('(bool)1'), '!!1')
   t.end()

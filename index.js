@@ -64,11 +64,14 @@ let generators = {
     n.name,
     n.value ? ['=', piff(n.value)] : null
   ],
-  parameter: n => [
-    n.type ? [piff(n.type), ' '] : null,
-    n.name,
-    n.value ? ['=', piff(n.value)] : null
-  ],
+  parameter: n => {
+    let type = n.type ? flatten([piff(n.type)]).join('').replace(/^\\([a-z])/, '$1') : null
+    return [
+      n.type ? [type, ' '] : null,
+      n.name,
+      n.value ? ['=', piff(n.value)] : null
+    ]
+  },
   block: n => ['{', inject(n.children.map(piff), '\n'), '\n', '}'],
   constref: n => [typeof n.name === 'string' ? n.name : piff(n.name)],
   return: n => ['return', n.expr ? [' ', piff(n.expr)] : null],
